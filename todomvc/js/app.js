@@ -22,6 +22,10 @@
 				}
 			}
 		},
+		created() {
+			let lists = localStorage.getItem('list') || '[]';
+			this.shops = JSON.parse(lists)
+		},
 		methods: {
 			calLeft() {
 				let newArr = []
@@ -32,13 +36,16 @@
 				});	
 				this.leftCount = newArr.length
 			},
-			addShop(name){
-				let addShop = { id: this.id++, name: name, complete: false, flag: false }
-				this.shops.push(addShop)
+			localShop(local){
+				let localList = JSON.parse(localStorage.getItem('list') || '[]')
+				localList.push(local)
+				localStorage.setItem('list', JSON.stringify(localList))	
 			},
 			add(){
 				if(this.shop.trim() == '') return alert("请输入内容")
-				this.addShop(this.shop)
+				let addShop = { id: this.id++, name: this.shop, complete: false, flag: false }
+				this.localShop(addShop)
+				this.shops.push(addShop)
 				this.shop = ''
 				this.calLeft()
 			},
